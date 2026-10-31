@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#090a0f" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23180d10'/><circle cx='50' cy='50' r='36' fill='%23dc2626' opacity='0.25'/><text y='68' x='50' text-anchor='middle' font-size='56'>🐺</text></svg>" />
-  <title>Hecate "Hex" Grimshaw — Lvl 10 Phantom Rogue Wifwolf</title>
+  <title>Hecate "Hex" Grimshaw — Lvl 9 Phantom Rogue Wifwolf</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -1088,7 +1088,7 @@
   <div id="portraitModal" class="portrait-modal" onclick="this.classList.remove('open')">
     <div class="portrait-modal-inner">
       <img src="./portrait.jpg" alt="Hecate 'Hex' Grimshaw Portrait" />
-      <div class="portrait-modal-caption">Hecate "Hex" Grimshaw — Level 10 Phantom Rogue Wifwolf (Tap anywhere to close)</div>
+      <div class="portrait-modal-caption">Hecate "Hex" Grimshaw — Level 9 Phantom Rogue Wifwolf (Tap anywhere to close)</div>
     </div>
   </div>
 
@@ -1101,7 +1101,7 @@
           Hecate "Hex" Grimshaw
         </h1>
         <div class="char-subtitle">
-          Level 10 Rogue (Phantom) • Wildhunt Shifter / Generational Wifwolf • Haunted One
+          Level 9 Rogue (Phantom) • Wildhunt Shifter / Generational Wifwolf • Haunted One
         </div>
         <div class="char-quote">
           "The bloodline made me a monster, sure—but I still get to choose whose throat I point it at."
@@ -1137,7 +1137,7 @@
       <div class="beast-perks">
         <span class="beast-perk-pill">🛡️ No Enemy Within 30 ft. Can Roll w/ Advantage Against You</span>
         <span class="beast-perk-pill">👁️ Advantage on All WIS Checks (Passive Perc: 24)</span>
-        <span class="beast-perk-pill">🩸 +14 Temp HP Granted</span>
+        <span class="beast-perk-pill">🩸 +13 Temp HP Granted</span>
       </div>
     </div>
 
@@ -1300,7 +1300,7 @@
             <div class="hp-header">
               <div>
                 <span style="font-family:'Cinzel',serif; font-size:0.9rem; color:var(--text-muted);">HIT POINTS:</span>
-                <span class="hp-numbers" id="hpText">83 / 83</span>
+                <span class="hp-numbers" id="hpText">75 / 75</span>
               </div>
               <div class="temp-hp-badge" id="tempHpText">Temp HP: 0</div>
             </div>
@@ -1321,11 +1321,11 @@
                 ⚡ Uncanny Dodge (½ Dmg)
               </button>
               <button class="btn-heal" onclick="applyHeal()">Heal</button>
-              <button class="btn-secondary" onclick="addTempHp(14)" style="margin-left:auto;">+14 Temp HP</button>
+              <button class="btn-secondary" onclick="addTempHp(13)" style="margin-left:auto;">+13 Temp HP</button>
             </div>
 
             <div class="bloodlust-warning" id="bloodlustAlert">
-              🩸 <strong>BLOODLUST THRESHOLD (&le;20 HP):</strong> Roll a <strong>DC 12 Wisdom Save</strong> or the Beast takes over!
+              🩸 <strong>BLOODLUST THRESHOLD (&le;18 HP):</strong> Roll a <strong>DC 12 Wisdom Save</strong> or the Beast takes over!
               <button class="btn-attack" style="padding:3px 8px; margin-left:8px; font-size:0.72rem;" onclick="rollCheck('Bloodlust WIS Save (DC 12)', 1)">Roll DC 12 WIS Save</button>
             </div>
           </div>
@@ -1338,7 +1338,7 @@
                 <span id="shiftCountText">4 / 4</span>
               </h4>
               <div class="pip-row" id="shiftPips"></div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">Bonus Action • +14 Temp HP & Wildhunt Aura</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Bonus Action • +13 Temp HP & Wildhunt Aura</div>
             </div>
 
             <div class="resource-card">
@@ -1391,7 +1391,7 @@
           <!-- COMBAT & SLASHER ATTACKS -->
           <div class="panel-title">
             <span>⚔️ Fangs (Piercer) & Talons (Slasher)</span>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Piercer + Slasher + Sentinel Active</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Piercer + Slasher Active</span>
           </div>
 
           <div class="attack-controls-bar">
@@ -1441,17 +1441,17 @@
             </div>
           </div>
 
-          <!-- WEAPON 3: SENTINEL -->
+          <!-- WEAPON 3: OPPORTUNITY ATTACK -->
           <div class="weapon-card">
             <div class="weapon-info">
-              <h4>⚡ Sentinel Opportunity Lunge (Reaction)</h4>
-              <div class="weapon-meta">Triggers 2nd Sneak Attack on another creature's turn + drops target's Speed to 0 ft!</div>
+              <h4>⚡ Opportunity Attack Lunge (Reaction)</h4>
+              <div class="weapon-meta">Reaction when an enemy leaves reach • Triggers 2nd Sneak Attack on another turn!</div>
             </div>
             <div class="weapon-btns">
-              <button class="btn-attack" onclick="rollWeaponAttack('Sentinel Reaction Bite (Piercer + 0 ft Speed)', 8, 5, 'piercing')">
+              <button class="btn-attack" onclick="rollWeaponAttack('Reaction Opportunity Bite (Piercer)', 8, 5, 'piercing')">
                 Reaction Bite (+5d6)
               </button>
-              <button class="btn-secondary" onclick="rollWeaponAttack('Sentinel Reaction Claw (Slasher + 0 ft Speed)', 6, 5, 'slashing')">
+              <button class="btn-secondary" onclick="rollWeaponAttack('Reaction Opportunity Claw (Slasher)', 6, 5, 'slashing')">
                 Reaction Claw (+5d6)
               </button>
             </div>
@@ -1524,7 +1524,7 @@
           <div id="tab-features" class="tab-content">
             <div class="feature-item">
               <h5>Wildhunt Shifting <span class="tag-action">Bonus Action</span></h5>
-              <p>1 min (4/LR). Gain <strong>14 Temp HP</strong>, <strong>Advantage on WIS checks</strong>, and <strong>no creature within 30 ft can make an attack roll with Advantage against you</strong> while you aren't incapacitated.</p>
+              <p>1 min (4/LR). Gain <strong>13 Temp HP</strong> (PB 4 + Level 9), <strong>Advantage on WIS checks</strong>, and <strong>no creature within 30 ft can make an attack roll with Advantage against you</strong> while you aren't incapacitated.</p>
             </div>
             <div class="feature-item">
               <h5>Wails from the Grave <span class="tag-action">Free on Sneak Attack</span></h5>
@@ -1535,11 +1535,11 @@
               <p>Snatch a Soul Trinket when a creature dies within 30 ft (max 4). Having &ge;1 grants <strong>Adv on Death & CON saves</strong>. Crush 1 for free Wails or 1 question to the spirit.</p>
             </div>
             <div class="feature-item">
-              <h5>Piercer + Slasher + Sentinel + Evasion</h5>
+              <h5>Piercer + Slasher + Evasion</h5>
               <p><strong>Piercer (Bite):</strong> Reroll 1 piercing die/turn; +1 weapon die on Crit.<br/>
               <strong>Slasher (Claws):</strong> Reduce hit target's speed by 10 ft/turn; Crit gives target Disadvantage on all attacks until your next turn!<br/>
-              <strong>Sentinel:</strong> Opportunity attacks drop speed to 0; Reaction attack when enemy within 5 ft attacks an ally (gives a 2nd Sneak Attack!).<br/>
-              <strong>Uncanny Dodge & Evasion:</strong> Reaction halve attack dmg; 0 dmg on passed DEX save.</p>
+              <strong>Uncanny Dodge & Evasion:</strong> Reaction halve attack dmg; 0 dmg on passed DEX save.<br/>
+              <em>(Note: Next ASI unlocks at Level 10 — Sentinel recommended).</em></p>
             </div>
           </div>
 
@@ -1564,8 +1564,8 @@
     // STATE
     let state = {
       shifted: false,
-      hp: 83,
-      maxHp: 83,
+      hp: 75,
+      maxHp: 75,
       tempHp: 0,
       shiftUses: 4,
       maxShiftUses: 4,
@@ -1615,8 +1615,8 @@
       document.getElementById('hpBar').style.width = `${hpPct}%`;
       document.getElementById('tempBar').style.width = `${tempPct}%`;
 
-      // Bloodlust alert at <= 20 HP
-      document.getElementById('bloodlustAlert').style.display = state.hp <= 20 ? 'block' : 'none';
+      // Bloodlust alert at <= 18 HP
+      document.getElementById('bloodlustAlert').style.display = state.hp <= 18 ? 'block' : 'none';
 
       // Pips
       renderPips('shiftPips', state.shiftUses, state.maxShiftUses, 'active-shift', 'toggleShiftPip');
@@ -1655,8 +1655,8 @@
       if (!state.shifted) {
         state.shifted = true;
         if (state.shiftUses > 0) state.shiftUses--;
-        state.tempHp = Math.max(state.tempHp, 14);
-        addLog('🌕 SHIFTED INTO HYBRID WEREWOLF!', 'Gained <strong>14 Temp HP</strong>, <strong>Advantage on all Wisdom checks</strong> (Passive Perception 24), and <strong>enemies within 30 ft cannot roll with Advantage against you</strong>!');
+        state.tempHp = Math.max(state.tempHp, 13);
+        addLog('🌕 SHIFTED INTO HYBRID WEREWOLF!', 'Gained <strong>13 Temp HP</strong>, <strong>Advantage on all Wisdom checks</strong> (Passive Perception 24), and <strong>enemies within 30 ft cannot roll with Advantage against you</strong>!');
       } else {
         state.shifted = false;
         addLog('🌘 Reverted to Human Form', 'The fur recedes and your breathing steadies.');
@@ -1955,7 +1955,7 @@
       state.tempHp = 0;
       state.shiftUses = state.maxShiftUses;
       state.wailUses = state.maxWailUses;
-      addLog('🌙 Long Rest Completed', 'HP restored to 83/83, Shifting (4/4) and Wails from the Grave (4/4) fully recharged!');
+      addLog('🌙 Long Rest Completed', `HP restored to ${state.maxHp}/${state.maxHp}, Shifting (4/4) and Wails from the Grave (4/4) fully recharged!`);
       renderAll();
     }
 
