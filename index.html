@@ -978,13 +978,124 @@
       border-color: var(--accent-moon);
       color: var(--accent-moon);
     }
+
+    /* PORTRAIT IN UPPER RIGHT CORNER */
+    .header-right-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .char-portrait-frame {
+      width: 108px;
+      height: 108px;
+      border-radius: 14px;
+      border: 2px solid var(--accent-moon);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85), 0 0 15px rgba(245, 158, 11, 0.25);
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      background: #090a0f;
+    }
+
+    .char-portrait-frame:hover {
+      transform: scale(1.04);
+    }
+
+    body.shifted-mode .char-portrait-frame {
+      border-color: #ef4444;
+      box-shadow: 0 0 28px rgba(220, 38, 38, 0.75);
+    }
+
+    .char-portrait-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+    }
+
+    .portrait-zoom-hint {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fde68a;
+      font-size: 0.65rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+      pointer-events: none;
+    }
+
+    /* PORTRAIT LIGHTBOX MODAL */
+    .portrait-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 6, 10, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: pointer;
+    }
+
+    .portrait-modal.open {
+      display: flex;
+    }
+
+    .portrait-modal-inner {
+      max-width: min(540px, 90vw);
+      max-height: 85vh;
+      border-radius: 16px;
+      border: 3px solid var(--accent-moon);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 40px var(--accent-moon-glow);
+      overflow: hidden;
+      background: var(--bg-panel);
+      text-align: center;
+    }
+
+    .portrait-modal-inner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .portrait-modal-caption {
+      padding: 10px 16px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    @media (max-width: 900px) {
+      .char-portrait-frame {
+        width: 92px;
+        height: 92px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- TAP-TO-ZOOM PORTRAIT LIGHTBOX -->
+  <div id="portraitModal" class="portrait-modal" onclick="this.classList.remove('open')">
+    <div class="portrait-modal-inner">
+      <img src="./portrait.jpg" alt="Hecate 'Hex' Grimshaw Portrait" />
+      <div class="portrait-modal-caption">Hecate "Hex" Grimshaw — Level 10 Phantom Rogue Wifwolf (Tap anywhere to close)</div>
+    </div>
+  </div>
+
   <div class="container">
     <!-- HEADER -->
     <header class="hero-header">
-      <div class="char-identity">
+      <div class="char-identity" style="flex: 1; min-width: 280px;">
         <h1>
           <span id="wolf-icon">🌘</span>
           Hecate "Hex" Grimshaw
@@ -997,15 +1108,22 @@
         </div>
       </div>
 
-      <div class="shift-controls">
-        <button id="shiftToggleBtn" class="shift-btn" onclick="toggleShift()">
-          <span>🐺</span>
-          <span id="shiftBtnText">SHIFT INTO THE BEAST</span>
-        </button>
-        <div class="rest-buttons">
-          <button class="btn-secondary" onclick="shortRest()">Short Rest</button>
-          <button class="btn-secondary" onclick="longRest()">Long Rest</button>
-          <button class="btn-secondary" onclick="exportSaveState()" title="Copy or Save State for iPad">📤 Sync / iPad</button>
+      <div class="header-right-group">
+        <div class="shift-controls">
+          <button id="shiftToggleBtn" class="shift-btn" onclick="toggleShift()">
+            <span>🐺</span>
+            <span id="shiftBtnText">SHIFT INTO THE BEAST</span>
+          </button>
+          <div class="rest-buttons">
+            <button class="btn-secondary" onclick="shortRest()">Short Rest</button>
+            <button class="btn-secondary" onclick="longRest()">Long Rest</button>
+            <button class="btn-secondary" onclick="exportSaveState()" title="Copy or Save State for iPad">📤 Sync / iPad</button>
+          </div>
+        </div>
+
+        <div class="char-portrait-frame" onclick="document.getElementById('portraitModal').classList.add('open')" title="Tap to enlarge portrait">
+          <img src="./portrait.jpg" alt="Hecate 'Hex' Grimshaw" class="char-portrait-img" />
+          <span class="portrait-zoom-hint">🔍 Tap</span>
         </div>
       </div>
     </header>

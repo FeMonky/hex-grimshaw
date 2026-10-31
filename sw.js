@@ -1,8 +1,9 @@
-const CACHE_NAME = 'hex-grimshaw-sheet-v1';
+const CACHE_NAME = 'hex-grimshaw-sheet-v2';
 const ASSETS = [
   './',
   './index.html',
   './Werewolf_Phantom_Rogue_Sheet.html',
+  './portrait.jpg',
   './manifest.json'
 ];
 
