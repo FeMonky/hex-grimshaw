@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Hex Grimshaw" />
+  <meta name="theme-color" content="#090a0f" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23180d10'/><circle cx='50' cy='50' r='36' fill='%23dc2626' opacity='0.25'/><text y='68' x='50' text-anchor='middle' font-size='56'>🐺</text></svg>" />
+  <title>Hecate "Hex" Grimshaw — Lvl 10 Phantom Rogue Wifwolf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090a0f;
+      --bg-panel: #12141d;
+      --bg-panel-alt: #181b26;
+      --border-brass: #4a3e2d;
+      --border-highlight: #8c6f3e;
+      --text-main: #e6e1d6;
+      --text-muted: #9a9488;
+      --accent-blood: #9e1b1b;
+      --accent-blood-bright: #dc2626;
+      --accent-ghost: #2dd4bf;
+      --accent-ghost-dim: rgba(45, 212, 191, 0.14);
+      --accent-moon: #f59e0b;
+      --accent-moon-glow: rgba(245, 158, 11, 0.22);
+      --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.75);
+    }
+
+    body.shifted-mode {
+      --bg-dark: #0c0607;
+      --bg-panel: #180d10;
+      --bg-panel-alt: #221216;
+      --border-brass: #6e1d24;
+      --border-highlight: #dc2626;
+      --accent-moon: #ef4444;
+      --accent-moon-glow: rgba(220, 38, 38, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, .ability-card, .skill-row, .pip, .die-chip, .toggle-label, .vital-box {
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    button:active, .ability-card:active, .skill-row:active, .pip:active, .die-chip:active {
+      transform: scale(0.96);
+    }
+
+    input[type="text"], input[type="number"], select {
+      font-size: 16px !important; /* Prevents iPadOS Safari auto-zoom on input focus */
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 85% 10%, var(--accent-moon-glow), transparent 35%),
+        radial-gradient(circle at 15% 85%, rgba(45, 212, 191, 0.07), transparent 40%),
+        linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%);
+      color: var(--text-main);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.45;
+      min-height: 100vh;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      transition: background-color 0.4s ease, color 0.3s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .container {
+      max-width: 1420px;
+      margin: 0 auto;
+    }
+
+    /* HEADER & MOON BANNER */
+    .hero-header {
+      background: linear-gradient(135deg, var(--bg-panel) 0%, #1b151e 60%, var(--bg-panel-alt) 100%);
+      border: 2px solid var(--border-brass);
+      border-radius: 10px;
+      padding: 20px 26px;
+      box-shadow: var(--shadow-heavy);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    body.shifted-mode .hero-header {
+      box-shadow: 0 0 35px rgba(220, 38, 38, 0.35), inset 0 0 25px rgba(220, 38, 38, 0.15);
+    }
+
+    .char-identity h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.1rem;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .char-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: var(--accent-moon);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .char-quote {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    /* SHIFT TOGGLE BUTTON */
+    .shift-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .shift-btn {
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 1.2px;
+      padding: 14px 24px;
+      border-radius: 8px;
+      border: 2px solid var(--accent-moon);
+      background: linear-gradient(135deg, #2b1d0e 0%, #4d260c 100%);
+      color: #fde68a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .shift-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(245, 158, 11, 0.45);
+    }
+
+    body.shifted-mode .shift-btn {
+      background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+      border-color: #fca5a5;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(220, 38, 38, 0.75);
+      animation: pulseBeast 2s infinite;
+    }
+
+    @keyframes pulseBeast {
+      0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.65); }
+      50% { box-shadow: 0 0 34px rgba(239, 68, 68, 0.95); }
+    }
+
+    .rest-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 9px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-brass);
+      background: var(--bg-panel-alt);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-highlight);
+      background: #25293a;
+    }
+
+    /* ACTIVE SHIFT BANNER */
+    .beast-banner {
+      display: none;
+      background: linear-gradient(90deg, rgba(127, 29, 29, 0.9) 0%, rgba(69, 10, 10, 0.95) 50%, rgba(127, 29, 29, 0.9) 100%);
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      color: #fecaca;
+      font-size: 0.98rem;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+    }
+
+    body.shifted-mode .beast-banner {
+      display: flex;
+    }
+
+    .beast-perks {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-weight: 600;
+    }
+
+    .beast-perk-pill {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(252, 165, 165, 0.4);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 310px 1fr 370px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 1180px) {
+      .main-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .col-right {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .col-right {
+        grid-column: span 1;
+      }
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-brass);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .panel-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-moon);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      border-bottom: 1px solid var(--border-brass);
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ABILITY SCORES */
+    .abilities-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .ability-card {
+      background: var(--bg-panel-alt);
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.2s;
+      position: relative;
+    }
+
+    .ability-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-highlight);
+    }
+
+    .ability-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .ability-mod {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 2px 0;
+    }
+
+    .ability-score {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .save-badge {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      display: inline-block;
+    }
+
+    .save-prof {
+      color: var(--accent-ghost);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      background: var(--accent-ghost-dim);
+      font-weight: 600;
+    }
+
+    .wis-shifted-glow {
+      display: none;
+      font-size: 0.7rem;
+      color: #fca5a5;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    body.shifted-mode .wis-shifted-glow {
+      display: block;
+    }
+
+    /* SKILLS LIST */
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 0.95rem;
+    }
+
+    .skill-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .skill-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prof-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid var(--text-muted);
+      display: inline-block;
+    }
+
+    .prof-dot.prof {
+      background: var(--accent-ghost);
+      border-color: var(--accent-ghost);
+    }
+
+    .prof-dot.exp {
+      background: var(--accent-moon);
+      border-color: var(--accent-moon);
+      box-shadow: 0 0 6px var(--accent-moon);
+    }
+
+    .skill-mod {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .adv-tag {
+      display: none;
+      font-size: 0.68rem;
+      font-family: 'Cinzel', serif;
+      background: #991b1b;
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 4px;
+      margin-left: 5px;
+    }
+
+    body.shifted-mode .wis-skill .adv-tag {
+      display: inline-block;
+    }
+
+    /* WHISPERS OF THE DEAD SELECTOR */
+    .whispers-box {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--accent-ghost-dim);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+    }
+
+    .whispers-box label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      color: var(--accent-ghost);
+      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+    }
+
+    .whispers-select {
+      width: 100%;
+      padding: 7px 10px;
+      background: #0d131a;
+      color: #fff;
+      border: 1px solid var(--accent-ghost);
+      border-radius: 5px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.95rem;
+    }
+
+    /* VITALS & HP TRACKER */
+    .vitals-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .vital-box {
+      background: var(--bg-panel-alt);
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .vital-val {
+      font-family: 'Cinzel', serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .vital-lbl {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .hp-container {
+      background: var(--bg-panel-alt);
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .hp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .hp-numbers {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .temp-hp-badge {
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .hp-bar-outer {
+      width: 100%;
+      height: 14px;
+      background: #090a0f;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #2e3244;
+      margin-bottom: 12px;
+      display: flex;
+    }
+
+    .hp-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #991b1b, #22c55e);
+      transition: width 0.3s ease;
+    }
+
+    .temp-bar-inner {
+      height: 100%;
+      background: #0284c7;
+      transition: width 0.3s ease;
+    }
+
+    .hp-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hp-input {
+      width: 75px;
+      padding: 7px 10px;
+      background: #090a0f;
+      border: 1px solid var(--border-brass);
+      border-radius: 5px;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .btn-dmg {
+      background: #7f1d1d;
+      border: 1px solid #dc2626;
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .btn-dmg:hover { background: #991b1b; }
+
+    .btn-uncanny {
+      background: #4c1d95;
+      border: 1px solid #8b5cf6;
+      color: #ede9fe;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .btn-uncanny:hover { background: #5b21b6; }
+
+    .btn-heal {
+      background: #14532d;
+      border: 1px solid #22c55e;
+      color: #dcfce7;
+      padding: 7px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .btn-heal:hover { background: #166534; }
+
+    .bloodlust-warning {
+      display: none;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: rgba(185, 28, 28, 0.25);
+      border: 1px solid #ef4444;
+      border-radius: 6px;
+      color: #fca5a5;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* SOUL TRINKETS & RESOURCES */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .resource-card {
+      background: var(--bg-panel-alt);
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .resource-card h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .pip-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .pip {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--border-highlight);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .step-btn {
+      width: 34px;
+      height: 36px;
+      background: #1a1e2d;
+      border: 1px solid var(--border-brass);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-btn:hover {
+      border-color: var(--accent-moon);
+    }
+
+    .pip.active-shift {
+      background: var(--accent-moon);
+      border-color: #fde68a;
+      box-shadow: 0 0 8px var(--accent-moon);
+    }
+
+    .pip.active-wail {
+      background: var(--accent-ghost);
+      border-color: #99f6e4;
+      box-shadow: 0 0 8px var(--accent-ghost);
+      color: #042f2e;
+      font-weight: 800;
+    }
+
+    /* TRINKET SLOTS */
+    .trinkets-section {
+      background: linear-gradient(180deg, rgba(19, 36, 42, 0.45) 0%, rgba(18, 20, 29, 0.9) 100%);
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .trinket-status-banner {
+      font-size: 0.85rem;
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background: rgba(45, 212, 191, 0.12);
+      color: #99f6e4;
+      border: 1px solid rgba(45, 212, 191, 0.3);
+    }
+
+    .trinket-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .trinket-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-ghost);
+      cursor: pointer;
+    }
+
+    .trinket-name {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #2e3b46;
+      color: var(--text-main);
+      padding: 5px 9px;
+      border-radius: 5px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.95rem;
+    }
+
+    .trinket-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: rgba(45, 212, 191, 0.16);
+      border: 1px solid var(--accent-ghost);
+      color: #99f6e4;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(45, 212, 191, 0.3);
+    }
+
+    /* ATTACKS & DICE ROLLER */
+    .attack-controls-bar {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--bg-panel-alt);
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-brass);
+      margin-bottom: 14px;
+    }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.94rem;
+    }
+
+    .toggle-label input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent-moon);
+    }
+
+    .weapon-card {
+      background: var(--bg-panel-alt);
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .weapon-info h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .weapon-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .weapon-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-attack {
+      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+      border: 1px solid #f87171;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-attack:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    }
+
+    /* DICE LOG */
+    .dice-log {
+      background: #07080c;
+      border: 1px solid var(--border-brass);
+      border-radius: 8px;
+      padding: 12px;
+      max-height: 360px;
+      overflow-y: auto;
+      font-size: 0.92rem;
+    }
+
+    .log-entry {
+      border-bottom: 1px solid #1e2230;
+      padding: 8px 0;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .log-entry:first-child {
+      border-left: 3px solid var(--accent-moon);
+      padding-left: 10px;
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .roll-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: var(--accent-moon);
+      font-size: 0.88rem;
+    }
+
+    .roll-total {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .crit-text {
+      color: #ef4444;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .die-chip {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      margin: 2px;
+      border-radius: 4px;
+      background: #1a1e2d;
+      border: 1px solid #3b4254;
+      color: #e2e8f0;
+      cursor: pointer;
+    }
+
+    .die-chip:hover {
+      border-color: var(--accent-moon);
+      background: #2b2318;
+    }
+
+    .die-chip.rerolled {
+      border-color: var(--accent-ghost);
+      color: var(--accent-ghost);
+    }
+
+    /* TABS FOR FEATURES & LORE */
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-brass);
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-panel-alt);
+      border-color: var(--border-highlight);
+      color: var(--accent-moon);
+    }
+
+    .tab-content {
+      display: none;
+      font-size: 0.94rem;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .feature-item {
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #282c3e;
+    }
+
+    .feature-item h5 {
+      font-family: 'Cinzel', serif;
+      color: #fff;
+      font-size: 0.92rem;
+      margin-bottom: 3px;
+    }
+
+    .tag-action {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      margin-left: 6px;
+    }
+
+    .quick-dice-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .btn-die {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border-brass);
+      background: var(--bg-panel-alt);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .btn-die:hover {
+      border-color: var(--accent-moon);
+      color: var(--accent-moon);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header class="hero-header">
+      <div class="char-identity">
+        <h1>
+          <span id="wolf-icon">🌘</span>
+          Hecate "Hex" Grimshaw
+        </h1>
+        <div class="char-subtitle">
+          Level 10 Rogue (Phantom) • Wildhunt Shifter / Generational Wifwolf • Haunted One
+        </div>
+        <div class="char-quote">
+          "The bloodline made me a monster, sure—but I still get to choose whose throat I point it at."
+        </div>
+      </div>
+
+      <div class="shift-controls">
+        <button id="shiftToggleBtn" class="shift-btn" onclick="toggleShift()">
+          <span>🐺</span>
+          <span id="shiftBtnText">SHIFT INTO THE BEAST</span>
+        </button>
+        <div class="rest-buttons">
+          <button class="btn-secondary" onclick="shortRest()">Short Rest</button>
+          <button class="btn-secondary" onclick="longRest()">Long Rest</button>
+          <button class="btn-secondary" onclick="exportSaveState()" title="Copy or Save State for iPad">📤 Sync / iPad</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ACTIVE BEAST MODE BANNER -->
+    <div class="beast-banner">
+      <div>
+        <strong>🌕 HYBRID WIFWOLF FORM ACTIVE (1 Minute):</strong>
+        Your jaw distends, black talons split your knuckles, and the ghosts of Grimshaw Hall howl around you.
+      </div>
+      <div class="beast-perks">
+        <span class="beast-perk-pill">🛡️ No Enemy Within 30 ft. Can Roll w/ Advantage Against You</span>
+        <span class="beast-perk-pill">👁️ Advantage on All WIS Checks (Passive Perc: 24)</span>
+        <span class="beast-perk-pill">🩸 +14 Temp HP Granted</span>
+      </div>
+    </div>
+
+    <!-- MAIN 3-COLUMN LAYOUT -->
+    <div class="main-grid">
+      <!-- LEFT COLUMN: ABILITIES, SAVES & SKILLS -->
+      <div class="col-left">
+        <div class="panel">
+          <div class="panel-title">
+            <span>Rolled Scores & Saves</span>
+            <span style="font-size:0.72rem; color:var(--text-muted);">4d6kh3 • Click to Roll</span>
+          </div>
+
+          <div class="abilities-grid">
+            <div class="ability-card" onclick="rollCheck('Strength Check', 0)">
+              <div class="ability-name">STR</div>
+              <div class="ability-mod">+0</div>
+              <div class="ability-score">11</div>
+              <div class="save-badge" onclick="event.stopPropagation(); rollCheck('STR Saving Throw', 0)">Save +0</div>
+            </div>
+
+            <div class="ability-card" onclick="rollCheck('Dexterity Check', 5)">
+              <div class="ability-name">DEX</div>
+              <div class="ability-mod">+5</div>
+              <div class="ability-score">20 <span style="font-size:0.68rem;">(16+2+2)</span></div>
+              <div class="save-badge save-prof" onclick="event.stopPropagation(); rollCheck('DEX Saving Throw (Evasion)', 9)">Save +9 ★</div>
+            </div>
+
+            <div class="ability-card" onclick="rollCheck('Constitution Check', 3)">
+              <div class="ability-name">CON</div>
+              <div class="ability-mod">+3</div>
+              <div class="ability-score">16 <span style="font-size:0.68rem;">(15+1)</span></div>
+              <div class="save-badge" id="conSaveBadge" onclick="event.stopPropagation(); rollConSave()">Save +3 (Adv★)</div>
+            </div>
+
+            <div class="ability-card" onclick="rollCheck('Intelligence Check', 0)">
+              <div class="ability-name">INT</div>
+              <div class="ability-mod">+0</div>
+              <div class="ability-score">10</div>
+              <div class="save-badge save-prof" onclick="event.stopPropagation(); rollCheck('INT Saving Throw', 4)">Save +4 ★</div>
+            </div>
+
+            <div class="ability-card" onclick="rollWisCheck('Wisdom Check', 1)">
+              <div class="ability-name">WIS</div>
+              <div class="ability-mod">+1</div>
+              <div class="ability-score">12</div>
+              <div class="save-badge" onclick="event.stopPropagation(); rollCheck('WIS Saving Throw', 1)">Save +1</div>
+              <div class="wis-shifted-glow">ADV ON CHECKS</div>
+            </div>
+
+            <div class="ability-card" onclick="rollCheck('Charisma Check', -1)">
+              <div class="ability-name">CHA</div>
+              <div class="ability-mod">-1</div>
+              <div class="ability-score">8</div>
+              <div class="save-badge" onclick="event.stopPropagation(); rollCheck('CHA Saving Throw', -1)">Save -1</div>
+            </div>
+          </div>
+
+          <div class="panel-title" style="margin-top: 10px;">
+            <span>Skills & Senses</span>
+            <span style="font-size:0.72rem; color:var(--accent-moon);">★ Expertise</span>
+          </div>
+
+          <div id="skillsList">
+            <div class="skill-row" onclick="rollCheck('Stealth (DEX)', 13)">
+              <div class="skill-left"><span class="prof-dot exp"></span> Stealth (DEX)</div>
+              <div class="skill-mod">+13</div>
+            </div>
+            <div class="skill-row wis-skill" onclick="rollWisCheck('Perception (WIS)', 9)">
+              <div class="skill-left"><span class="prof-dot exp"></span> Perception (WIS) <span class="adv-tag">ADV</span></div>
+              <div class="skill-mod">+9</div>
+            </div>
+            <div class="skill-row wis-skill" onclick="rollWisCheck('Survival / Scent Tracking (WIS)', 9)">
+              <div class="skill-left"><span class="prof-dot exp"></span> Survival (WIS) <span class="adv-tag">ADV</span></div>
+              <div class="skill-mod">+9</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Athletics (STR)', 8)">
+              <div class="skill-left"><span class="prof-dot exp"></span> Athletics (STR)</div>
+              <div class="skill-mod">+8</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Thieves\' Tools (DEX)', 13)">
+              <div class="skill-left"><span class="prof-dot exp"></span> Thieves' Tools (DEX)</div>
+              <div class="skill-mod">+13</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Acrobatics (DEX)', 5)">
+              <div class="skill-left"><span class="prof-dot"></span> Acrobatics (DEX)</div>
+              <div class="skill-mod">+5</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Sleight of Hand (DEX)', 5)">
+              <div class="skill-left"><span class="prof-dot"></span> Sleight of Hand (DEX)</div>
+              <div class="skill-mod">+5</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Investigation (INT)', 4)">
+              <div class="skill-left"><span class="prof-dot prof"></span> Investigation (INT)</div>
+              <div class="skill-mod">+4</div>
+            </div>
+            <div class="skill-row" onclick="rollCheck('Intimidation (CHA)', 3)">
+              <div class="skill-left"><span class="prof-dot prof"></span> Intimidation (CHA)</div>
+              <div class="skill-mod">+3</div>
+            </div>
+            <div class="skill-row wis-skill" onclick="rollWisCheck('Insight (WIS)', 1)">
+              <div class="skill-left"><span class="prof-dot"></span> Insight (WIS) <span class="adv-tag">ADV</span></div>
+              <div class="skill-mod">+1</div>
+            </div>
+            <div class="skill-row wis-skill" onclick="rollWisCheck('Medicine (WIS)', 1)">
+              <div class="skill-left"><span class="prof-dot"></span> Medicine (WIS) <span class="adv-tag">ADV</span></div>
+              <div class="skill-mod">+1</div>
+            </div>
+          </div>
+
+          <!-- WHISPERS OF THE DEAD FLOATING SKILL -->
+          <div class="whispers-box">
+            <label for="whispersSelect">👻 WHISPERS OF THE DEAD (Floating Ghost Proficiency):</label>
+            <select id="whispersSelect" class="whispers-select" onchange="updateWhispersSkill()">
+              <option value="Arcana (INT)|4">Ben's Occult Notes — Arcana (+4)</option>
+              <option value="Religion (INT)|4">Ancestor's Funeral Rites — Religion (+4)</option>
+              <option value="History (INT)|4">Blackmoor Estate Lore — History (+4)</option>
+              <option value="Medicine (WIS)|5">Butcher's Anatomy — Medicine (+5)</option>
+              <option value="Insight (WIS)|5">Paranoid Ghost — Insight (+5)</option>
+              <option value="Acrobatics (DEX)|9">Rooftop Stalker — Acrobatics (+9)</option>
+              <option value="Sleight of Hand (DEX)|9">Cutpurse Ancestor — Sleight of Hand (+9)</option>
+              <option value="Deception (CHA)|3">Playing Normal — Deception (+3)</option>
+            </select>
+            <button class="btn-ghost" style="width:100%; margin-top:8px;" onclick="rollWhispersSkill()">
+              Roll Active Ghost Skill
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: VITALS, HP, TRINKETS & COMBAT ACTIONS -->
+      <div class="col-center">
+        <div class="panel">
+          <div class="panel-title">
+            <span>Combat Vitals & Curse Resilience</span>
+            <span style="font-size:0.78rem; color:var(--text-muted);">Proficiency Bonus: +4</span>
+          </div>
+
+          <div class="vitals-row">
+            <div class="vital-box">
+              <div class="vital-val">17</div>
+              <div class="vital-lbl">Armor Class</div>
+            </div>
+            <div class="vital-box" style="cursor:pointer;" onclick="rollCheck('Initiative', 5)">
+              <div class="vital-val">+5</div>
+              <div class="vital-lbl">Initiative 🎲</div>
+            </div>
+            <div class="vital-box">
+              <div class="vital-val">30 ft</div>
+              <div class="vital-lbl">Speed</div>
+            </div>
+            <div class="vital-box">
+              <div class="vital-val" id="passivePercDisplay">19</div>
+              <div class="vital-lbl">Passive Perc</div>
+            </div>
+          </div>
+
+          <!-- HP TRACKER -->
+          <div class="hp-container">
+            <div class="hp-header">
+              <div>
+                <span style="font-family:'Cinzel',serif; font-size:0.9rem; color:var(--text-muted);">HIT POINTS:</span>
+                <span class="hp-numbers" id="hpText">83 / 83</span>
+              </div>
+              <div class="temp-hp-badge" id="tempHpText">Temp HP: 0</div>
+            </div>
+
+            <div class="hp-bar-outer">
+              <div class="hp-bar-inner" id="hpBar" style="width: 100%;"></div>
+              <div class="temp-bar-inner" id="tempBar" style="width: 0%;"></div>
+            </div>
+
+            <div class="hp-controls">
+              <button class="step-btn" onclick="stepHpInput(-5)">-5</button>
+              <button class="step-btn" onclick="stepHpInput(-1)">-</button>
+              <input type="number" id="hpInput" class="hp-input" value="10" min="1" inputmode="numeric" />
+              <button class="step-btn" onclick="stepHpInput(1)">+</button>
+              <button class="step-btn" onclick="stepHpInput(5)">+5</button>
+              <button class="btn-dmg" onclick="applyDamage(false)">Take Damage</button>
+              <button class="btn-uncanny" onclick="applyDamage(true)" title="Reaction: Halve incoming attack damage!">
+                ⚡ Uncanny Dodge (½ Dmg)
+              </button>
+              <button class="btn-heal" onclick="applyHeal()">Heal</button>
+              <button class="btn-secondary" onclick="addTempHp(14)" style="margin-left:auto;">+14 Temp HP</button>
+            </div>
+
+            <div class="bloodlust-warning" id="bloodlustAlert">
+              🩸 <strong>BLOODLUST THRESHOLD (&le;20 HP):</strong> Roll a <strong>DC 12 Wisdom Save</strong> or the Beast takes over!
+              <button class="btn-attack" style="padding:3px 8px; margin-left:8px; font-size:0.72rem;" onclick="rollCheck('Bloodlust WIS Save (DC 12)', 1)">Roll DC 12 WIS Save</button>
+            </div>
+          </div>
+
+          <!-- RESOURCE TRACKERS -->
+          <div class="resource-grid">
+            <div class="resource-card">
+              <h4>
+                <span>🐺 Shifting Uses</span>
+                <span id="shiftCountText">4 / 4</span>
+              </h4>
+              <div class="pip-row" id="shiftPips"></div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Bonus Action • +14 Temp HP & Wildhunt Aura</div>
+            </div>
+
+            <div class="resource-card">
+              <h4>
+                <span>💀 Wails from the Grave</span>
+                <span id="wailCountText">4 / 4</span>
+              </h4>
+              <div class="pip-row" id="wailPips"></div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">3d6 Necrotic splash to 2nd target w/in 30 ft</div>
+            </div>
+          </div>
+
+          <!-- TOKENS OF THE DEPARTED (SOUL TRINKETS) -->
+          <div class="trinkets-section">
+            <div class="panel-title" style="border-color:rgba(45,212,191,0.3); color:var(--accent-ghost); margin-bottom:8px;">
+              <span>👻 Tokens of the Departed (Soul Trinkets)</span>
+              <span id="trinketCountBadge">3 / 4 Held</span>
+            </div>
+
+            <div class="trinket-status-banner" id="trinketPerkBanner">
+              ✅ <strong>Spirit Ward Active (&ge;1 Trinket):</strong> You have <strong>Advantage on Death Saves & CON Saves</strong>!
+            </div>
+
+            <div id="trinketList">
+              <div class="trinket-item">
+                <input type="checkbox" class="trinket-checkbox" checked onchange="updateTrinkets()" />
+                <input type="text" class="trinket-name" value="1. Ben's Crushed Pocket Watch (stopped at 11:47 PM)" />
+              </div>
+              <div class="trinket-item">
+                <input type="checkbox" class="trinket-checkbox" checked onchange="updateTrinkets()" />
+                <input type="text" class="trinket-name" value="2. Father's Claw-Gouged Signet Ring" />
+              </div>
+              <div class="trinket-item">
+                <input type="checkbox" class="trinket-checkbox" checked onchange="updateTrinkets()" />
+                <input type="text" class="trinket-name" value="3. Tarnished Silver Musket Ball wrapped in leather" />
+              </div>
+              <div class="trinket-item">
+                <input type="checkbox" class="trinket-checkbox" onchange="updateTrinkets()" />
+                <input type="text" class="trinket-name" value="4. [Empty Slot — Snatch Soul w/ Reaction when enemy dies w/in 30 ft]" />
+              </div>
+            </div>
+
+            <div class="trinket-actions">
+              <button class="btn-ghost" onclick="harvestTrinket()">+ Snatch Soul (Reaction)</button>
+              <button class="btn-ghost" onclick="consumeTrinketForWail()">🔥 Crush Trinket for Free 3d6 Wail</button>
+              <button class="btn-ghost" onclick="consumeTrinketQuestion()">❓ Crush Trinket to Interrogate Ghost</button>
+            </div>
+          </div>
+
+          <!-- COMBAT & SLASHER ATTACKS -->
+          <div class="panel-title">
+            <span>⚔️ Fangs (Piercer) & Talons (Slasher)</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Piercer + Slasher + Sentinel Active</span>
+          </div>
+
+          <div class="attack-controls-bar">
+            <label class="toggle-label">
+              <input type="checkbox" id="steadyAimToggle" checked />
+              <span>🎯 Advantage (Steady Aim / Hidden)</span>
+            </label>
+            <label class="toggle-label">
+              <input type="checkbox" id="sneakAttackToggle" checked />
+              <span>🩸 Sneak Attack (+5d6)</span>
+            </label>
+            <label class="toggle-label">
+              <input type="checkbox" id="forceCritToggle" />
+              <span>💥 Force Crit</span>
+            </label>
+          </div>
+
+          <!-- WEAPON 1: PIERCER -->
+          <div class="weapon-card">
+            <div class="weapon-info">
+              <h4>🐺 Rending Fangs (Rapier — Piercing)</h4>
+              <div class="weapon-meta">Melee Finesse • +9 to Hit • 1d8+5 Piercing (+5d6 Sneak Attack) • <strong>Piercer:</strong> Reroll 1 die & +1d8 on Crit</div>
+            </div>
+            <div class="weapon-btns">
+              <button class="btn-attack" onclick="rollWeaponAttack('Rending Fangs (Piercer Bite)', 8, 5, 'piercing')">
+                Bite Attack (Piercer)
+              </button>
+              <button class="btn-ghost" onclick="triggerWailsSplash()">
+                💀 Wails (3d6)
+              </button>
+            </div>
+          </div>
+
+          <!-- WEAPON 2: SLASHER -->
+          <div class="weapon-card">
+            <div class="weapon-info">
+              <h4>🐾 Hamstringing Talons (Scimitar / Slashing Claws)</h4>
+              <div class="weapon-meta">Melee Finesse • +9 to Hit • 1d6+5 Slashing • <strong>Slasher:</strong> -10 ft Target Speed & Crit Inflicts Disadvantage on Target's Attacks!</div>
+            </div>
+            <div class="weapon-btns">
+              <button class="btn-attack" onclick="rollWeaponAttack('Hamstringing Talons (Slasher Claw)', 6, 5, 'slashing')">
+                Main Claw (Slasher)
+              </button>
+              <button class="btn-secondary" onclick="rollWeaponAttack('Off-Hand Slashing Claw (Bonus Action)', 6, 0, 'slashing', false)">
+                Off-Hand Claw (-10 ft Spd)
+              </button>
+            </div>
+          </div>
+
+          <!-- WEAPON 3: SENTINEL -->
+          <div class="weapon-card">
+            <div class="weapon-info">
+              <h4>⚡ Sentinel Opportunity Lunge (Reaction)</h4>
+              <div class="weapon-meta">Triggers 2nd Sneak Attack on another creature's turn + drops target's Speed to 0 ft!</div>
+            </div>
+            <div class="weapon-btns">
+              <button class="btn-attack" onclick="rollWeaponAttack('Sentinel Reaction Bite (Piercer + 0 ft Speed)', 8, 5, 'piercing')">
+                Reaction Bite (+5d6)
+              </button>
+              <button class="btn-secondary" onclick="rollWeaponAttack('Sentinel Reaction Claw (Slasher + 0 ft Speed)', 6, 5, 'slashing')">
+                Reaction Claw (+5d6)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: DICE LOG & BACKSTORY / FEATURES TABS -->
+      <div class="col-right">
+        <!-- DICE ROLLER LOG -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>🎲 Horror Dice Roller & Piercer Log</span>
+            <button class="btn-secondary" style="padding:3px 8px; font-size:0.7rem;" onclick="clearLog()">Clear</button>
+          </div>
+
+          <div class="quick-dice-bar">
+            <button class="btn-die" onclick="rollRawDie(20)">d20</button>
+            <button class="btn-die" onclick="rollRawDie(12)">d12</button>
+            <button class="btn-die" onclick="rollRawDie(10)">d10</button>
+            <button class="btn-die" onclick="rollRawDie(8)">d8</button>
+            <button class="btn-die" onclick="rollRawDie(6)">d6</button>
+            <button class="btn-die" onclick="rollRawDie(4)">d4</button>
+            <button class="btn-die" onclick="rollCheck('Death Saving Throw', 0, true)">💀 Death Save</button>
+          </div>
+
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:8px;">
+            💡 <em>Piercer Tip: Click any piercing damage die chip in the log below to reroll it!</em>
+          </div>
+
+          <div class="dice-log" id="diceLog">
+            <div class="log-entry">
+              <div class="roll-title">Welcome to Grimshaw Hall</div>
+              <div>Click any ability, skill, or weapon attack to roll. Toggle <strong>Shift Into the Beast</strong> at the top when the moon rises!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURES, BACKSTORY & ROLEPLAY TABS -->
+        <div class="panel">
+          <div class="tabs-bar">
+            <button class="tab-btn active" onclick="switchTab('tab-lore', this)">📜 Backstory & Quips</button>
+            <button class="tab-btn" onclick="switchTab('tab-features', this)">⚡ Features & Feats</button>
+            <button class="tab-btn" onclick="switchTab('tab-dm', this)">🌕 DM Curse Rules</button>
+          </div>
+
+          <!-- TAB 1: BACKSTORY -->
+          <div id="tab-lore" class="tab-content active">
+            <div class="feature-item">
+              <h5>The Grimshaw Inheritance (Generational Wifwolf Curse)</h5>
+              <p>You fled <strong>Grimshaw Hall</strong> ten years ago to become a city cat-burglar ("Hex"), trying to outrun your family's sinister reputation. Six months ago, your brother <strong>Ben</strong> was found torn to pieces on the moors. Returning for his funeral, you discovered the truth in the iron-barred cellar: a monster wasn't hunting your family—<strong>your family WAS the monster</strong>. You survived the night the manor burned, inheriting the wifwolf curse and the bickering ghosts of your bloodline.</p>
+            </div>
+            <div class="feature-item">
+              <h5>Gallows Humor & Paranoia</h5>
+              <ul style="padding-left:18px; margin-top:4px;">
+                <li><strong>Silver Check:</strong> Discreetly tests tavern cutlery against her thumb and asks if the stew contains wolfsbane <em>"purely out of culinary curiosity."</em></li>
+                <li><strong>Exit Mapping:</strong> Never sits with her back to a door; counts every window, lock, and chimney upon entering.</li>
+                <li><strong>Talking to Ghosts:</strong> Mutters dry comebacks under her breath to her mangled brother Ben's ghost hovering over her shoulder.</li>
+              </ul>
+            </div>
+            <div class="feature-item" style="border-bottom:none;">
+              <h5>Table Quips (Click to Roll a Random Line)</h5>
+              <button class="btn-secondary" style="width:100%; margin-top:4px;" onclick="rollRandomQuip()">
+                🎙️ Generate Gallows Humor Quip
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 2: FEATURES -->
+          <div id="tab-features" class="tab-content">
+            <div class="feature-item">
+              <h5>Wildhunt Shifting <span class="tag-action">Bonus Action</span></h5>
+              <p>1 min (4/LR). Gain <strong>14 Temp HP</strong>, <strong>Advantage on WIS checks</strong>, and <strong>no creature within 30 ft can make an attack roll with Advantage against you</strong> while you aren't incapacitated.</p>
+            </div>
+            <div class="feature-item">
+              <h5>Wails from the Grave <span class="tag-action">Free on Sneak Attack</span></h5>
+              <p>After dealing Sneak Attack, deal <strong>3d6 Necrotic</strong> to a 2nd creature within 30 ft. (4/LR, or crush a Soul Trinket).</p>
+            </div>
+            <div class="feature-item">
+              <h5>Tokens of the Departed <span class="tag-action">Reaction (30 ft)</span></h5>
+              <p>Snatch a Soul Trinket when a creature dies within 30 ft (max 4). Having &ge;1 grants <strong>Adv on Death & CON saves</strong>. Crush 1 for free Wails or 1 question to the spirit.</p>
+            </div>
+            <div class="feature-item">
+              <h5>Piercer + Slasher + Sentinel + Evasion</h5>
+              <p><strong>Piercer (Bite):</strong> Reroll 1 piercing die/turn; +1 weapon die on Crit.<br/>
+              <strong>Slasher (Claws):</strong> Reduce hit target's speed by 10 ft/turn; Crit gives target Disadvantage on all attacks until your next turn!<br/>
+              <strong>Sentinel:</strong> Opportunity attacks drop speed to 0; Reaction attack when enemy within 5 ft attacks an ally (gives a 2nd Sneak Attack!).<br/>
+              <strong>Uncanny Dodge & Evasion:</strong> Reaction halve attack dmg; 0 dmg on passed DEX save.</p>
+            </div>
+          </div>
+
+          <!-- TAB 3: DM CURSE MODULE -->
+          <div id="tab-dm" class="tab-content">
+            <div class="feature-item">
+              <h5>Optional True Lycanthropy Overlay</h5>
+              <p>If your DM enables full Dread Domain / Monster Manual Lycanthropy:</p>
+              <ul style="padding-left:18px; margin-top:4px;">
+                <li><strong>Finesse Natural Weapons:</strong> Unarmed Bite (1d8) and Claws (2d4) count as Finesse weapons eligible for Sneak Attack.</li>
+                <li><strong>Cursed Hide:</strong> Resistance to non-magical, non-silvered Bludgeoning, Piercing, and Slashing damage; Vulnerability to Silvered weapons.</li>
+                <li><strong>Harkon's Bite (Uncommon Item):</strong> Wolf-tooth talisman granting +1 to all Saves and Checks.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // STATE
+    let state = {
+      shifted: false,
+      hp: 83,
+      maxHp: 83,
+      tempHp: 0,
+      shiftUses: 4,
+      maxShiftUses: 4,
+      wailUses: 4,
+      maxWailUses: 4,
+      rollHistory: []
+    };
+
+    const quips = [
+      "\"Is that real silver, or plated? Don't flatter yourself, I'm just appraising the estate.\"",
+      "\"Ben says the door on the left is trapped. Well, Ben walked into a bear trap six months ago, so take that with a grain of salt.\"",
+      "\"Don't mind the growling—skipped lunch, terrible family metabolism.\"",
+      "\"Good news: I found the tracks. Bad news: they smell like my uncle's side of the family.\"",
+      "\"If I start sprouting fur and asking how rare you like your steak, do me a favor and lock the cellar from the outside.\"",
+      "\"My therapist said I need to stop bringing work home with me. Then I trapped a cultist's soul in a pocket watch.\""
+    ];
+
+    function init() {
+      const saved = localStorage.getItem('talbot_werewolf_sheet_v2');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          state = { ...state, ...parsed };
+        } catch (e) {}
+      }
+      renderAll();
+    }
+
+    function saveState() {
+      localStorage.setItem('talbot_werewolf_sheet_v2', JSON.stringify(state));
+    }
+
+    function renderAll() {
+      // Shift UI
+      document.body.classList.toggle('shifted-mode', state.shifted);
+      document.getElementById('wolf-icon').textContent = state.shifted ? '🐺' : '🌘';
+      document.getElementById('shiftBtnText').textContent = state.shifted
+        ? 'SHIFTED: BEAST UNLEASHED (Active)'
+        : 'SHIFT INTO THE BEAST';
+      document.getElementById('passivePercDisplay').textContent = state.shifted ? '24 ★' : '19';
+
+      // HP UI
+      document.getElementById('hpText').textContent = `${state.hp} / ${state.maxHp}`;
+      document.getElementById('tempHpText').textContent = `Temp HP: ${state.tempHp}`;
+      const hpPct = Math.max(0, Math.min(100, (state.hp / state.maxHp) * 100));
+      const tempPct = Math.max(0, Math.min(35, (state.tempHp / state.maxHp) * 100));
+      document.getElementById('hpBar').style.width = `${hpPct}%`;
+      document.getElementById('tempBar').style.width = `${tempPct}%`;
+
+      // Bloodlust alert at <= 20 HP
+      document.getElementById('bloodlustAlert').style.display = state.hp <= 20 ? 'block' : 'none';
+
+      // Pips
+      renderPips('shiftPips', state.shiftUses, state.maxShiftUses, 'active-shift', 'toggleShiftPip');
+      document.getElementById('shiftCountText').textContent = `${state.shiftUses} / ${state.maxShiftUses}`;
+
+      renderPips('wailPips', state.wailUses, state.maxWailUses, 'active-wail', 'toggleWailPip');
+      document.getElementById('wailCountText').textContent = `${state.wailUses} / ${state.maxWailUses}`;
+
+      updateTrinkets();
+      saveState();
+    }
+
+    function renderPips(containerId, current, max, activeClass, fnName) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      for (let i = 1; i <= max; i++) {
+        const pip = document.createElement('div');
+        pip.className = 'pip ' + (i <= current ? activeClass : '');
+        pip.textContent = i <= current ? '●' : '';
+        pip.onclick = () => window[fnName](i);
+        container.appendChild(pip);
+      }
+    }
+
+    function toggleShiftPip(idx) {
+      state.shiftUses = (state.shiftUses === idx) ? idx - 1 : idx;
+      renderAll();
+    }
+
+    function toggleWailPip(idx) {
+      state.wailUses = (state.wailUses === idx) ? idx - 1 : idx;
+      renderAll();
+    }
+
+    function toggleShift() {
+      if (!state.shifted) {
+        state.shifted = true;
+        if (state.shiftUses > 0) state.shiftUses--;
+        state.tempHp = Math.max(state.tempHp, 14);
+        addLog('🌕 SHIFTED INTO HYBRID WEREWOLF!', 'Gained <strong>14 Temp HP</strong>, <strong>Advantage on all Wisdom checks</strong> (Passive Perception 24), and <strong>enemies within 30 ft cannot roll with Advantage against you</strong>!');
+      } else {
+        state.shifted = false;
+        addLog('🌘 Reverted to Human Form', 'The fur recedes and your breathing steadies.');
+      }
+      renderAll();
+    }
+
+    function applyDamage(uncannyDodge) {
+      const raw = parseInt(document.getElementById('hpInput').value) || 0;
+      if (raw <= 0) return;
+      const dmg = uncannyDodge ? Math.floor(raw / 2) : raw;
+      let remaining = dmg;
+
+      if (state.tempHp > 0) {
+        const absorbed = Math.min(state.tempHp, remaining);
+        state.tempHp -= absorbed;
+        remaining -= absorbed;
+      }
+      state.hp = Math.max(0, state.hp - remaining);
+
+      addLog(
+        uncannyDodge ? `⚡ Uncanny Dodge! (${raw} ➔ ${dmg} dmg)` : `🩸 Took ${dmg} Damage`,
+        `Current HP: <strong>${state.hp}/${state.maxHp}</strong> (Temp HP: ${state.tempHp})`
+      );
+      renderAll();
+    }
+
+    function applyHeal() {
+      const val = parseInt(document.getElementById('hpInput').value) || 0;
+      if (val <= 0) return;
+      state.hp = Math.min(state.maxHp, state.hp + val);
+      addLog(`💚 Healed +${val} HP`, `Current HP: <strong>${state.hp}/${state.maxHp}</strong>`);
+      renderAll();
+    }
+
+    function addTempHp(amount) {
+      state.tempHp = Math.max(state.tempHp, amount);
+      addLog(`🛡️ Temp HP Set to ${state.tempHp}`, 'Supernatural resilience bolsters your hide.');
+      renderAll();
+    }
+
+    function countActiveTrinkets() {
+      const boxes = document.querySelectorAll('.trinket-checkbox');
+      let count = 0;
+      boxes.forEach(b => { if (b.checked) count++; });
+      return count;
+    }
+
+    function updateTrinkets() {
+      const count = countActiveTrinkets();
+      document.getElementById('trinketCountBadge').textContent = `${count} / 4 Held`;
+      const banner = document.getElementById('trinketPerkBanner');
+      const conBadge = document.getElementById('conSaveBadge');
+
+      if (count >= 1) {
+        banner.innerHTML = '✅ <strong>Spirit Ward Active (&ge;1 Trinket):</strong> You have <strong>Advantage on Death Saves & CON Saves</strong>!';
+        banner.style.opacity = '1';
+        conBadge.textContent = 'Save +3 (Adv★)';
+        conBadge.classList.add('save-prof');
+      } else {
+        banner.innerHTML = '⚠️ <strong>0 Trinkets Held:</strong> Snatch a soul w/ Reaction when a creature dies within 30 ft to regain CON/Death Save Advantage.';
+        banner.style.opacity = '0.7';
+        conBadge.textContent = 'Save +3';
+        conBadge.classList.remove('save-prof');
+      }
+    }
+
+    function harvestTrinket() {
+      const boxes = document.querySelectorAll('.trinket-checkbox');
+      for (let b of boxes) {
+        if (!b.checked) {
+          b.checked = true;
+          updateTrinkets();
+          addLog('👻 Soul Trinket Harvested (Reaction)', 'Snatched a departing spirit fragment within 30 ft!');
+          return;
+        }
+      }
+      addLog('👻 Trinkets Full (4/4)', 'You already hold the maximum of 4 Soul Trinkets.');
+    }
+
+    function consumeTrinketForWail() {
+      const boxes = Array.from(document.querySelectorAll('.trinket-checkbox')).reverse();
+      for (let b of boxes) {
+        if (b.checked) {
+          b.checked = false;
+          updateTrinkets();
+          triggerWailsSplash(true);
+          return;
+        }
+      }
+      addLog('⚠️ No Soul Trinkets Available', 'You have no Soul Trinkets to crush!');
+    }
+
+    function consumeTrinketQuestion() {
+      const boxes = Array.from(document.querySelectorAll('.trinket-checkbox')).reverse();
+      for (let b of boxes) {
+        if (b.checked) {
+          b.checked = false;
+          updateTrinkets();
+          addLog('❓ Interrogated Departed Soul (Action)', 'Crushed a Soul Trinket. The spirit must answer one question succinctly before fading!');
+          return;
+        }
+      }
+      addLog('⚠️ No Soul Trinkets Available', 'You have no Soul Trinkets to crush!');
+    }
+
+    // DICE FUNCTIONS
+    function d(sides) {
+      return Math.floor(Math.random() * sides) + 1;
+    }
+
+    function rollCheck(name, mod, isDeathSave = false) {
+      const hasAdv = isDeathSave && countActiveTrinkets() >= 1;
+      const r1 = d(20);
+      const r2 = d(20);
+      const chosen = hasAdv ? Math.max(r1, r2) : r1;
+      const total = chosen + mod;
+      const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+
+      let detail = hasAdv
+        ? `2d20kh1 (${r1}, ${r2}) ${modStr} = <span class="roll-total">${total}</span> <em>(Trinket Advantage!)</em>`
+        : `1d20 (${r1}) ${modStr} = <span class="roll-total">${total}</span>`;
+
+      if (chosen === 20) detail += ' <span class="crit-text">★ NAT 20!</span>';
+      if (chosen === 1) detail += ' <span style="color:#f87171;">(Nat 1)</span>';
+
+      addLog(`🎲 ${name}`, detail);
+    }
+
+    function rollConSave() {
+      const hasAdv = countActiveTrinkets() >= 1;
+      const r1 = d(20);
+      const r2 = d(20);
+      const chosen = hasAdv ? Math.max(r1, r2) : r1;
+      const total = chosen + 3;
+      const detail = hasAdv
+        ? `2d20kh1 (${r1}, ${r2}) + 3 = <span class="roll-total">${total}</span> <em>(Tokens of the Departed Advantage!)</em>`
+        : `1d20 (${r1}) + 3 = <span class="roll-total">${total}</span>`;
+      addLog('🛡️ CON Saving Throw', detail);
+    }
+
+    function rollWisCheck(name, mod) {
+      const hasAdv = state.shifted;
+      const r1 = d(20);
+      const r2 = d(20);
+      const chosen = hasAdv ? Math.max(r1, r2) : r1;
+      const total = chosen + mod;
+      const detail = hasAdv
+        ? `2d20kh1 (${r1}, ${r2}) + ${mod} = <span class="roll-total">${total}</span> <em>(🐺 Wildhunt Shifted Advantage!)</em>`
+        : `1d20 (${r1}) + ${mod} = <span class="roll-total">${total}</span>`;
+      addLog(`👁️ ${name}`, detail);
+    }
+
+    function rollWhispersSkill() {
+      const val = document.getElementById('whispersSelect').value;
+      const [name, modStr] = val.split('|');
+      const mod = parseInt(modStr);
+      if (name.includes('(WIS)')) {
+        rollWisCheck(`👻 Whispers: ${name}`, mod);
+      } else {
+        rollCheck(`👻 Whispers: ${name}`, mod);
+      }
+    }
+
+    function updateWhispersSkill() {
+      const sel = document.getElementById('whispersSelect');
+      const text = sel.options[sel.selectedIndex].text;
+      addLog('👻 Whispers of the Dead Attuned', `Channeling ancestral ghost proficiency: <strong>${text}</strong>`);
+    }
+
+    // WEAPON ATTACK WITH INTERACTIVE PIERCER & SLASHER RIDERS
+    function rollWeaponAttack(weaponName, weaponDie, flatMod, dmgType = 'piercing', allowSneakOverride = null) {
+      const adv = document.getElementById('steadyAimToggle').checked;
+      const useSneak = allowSneakOverride !== null ? allowSneakOverride : document.getElementById('sneakAttackToggle').checked;
+      const forceCrit = document.getElementById('forceCritToggle').checked;
+
+      const r1 = d(20);
+      const r2 = d(20);
+      const d20Roll = adv ? Math.max(r1, r2) : r1;
+      const isCrit = forceCrit || d20Roll === 20;
+      const toHitTotal = d20Roll + 9;
+
+      // Build damage dice array
+      const diceObjs = [];
+      // Piercer adds 1 extra weapon die on crit (3 total); Slasher has normal 2 weapon dice on crit
+      const numWeaponDice = isCrit ? (dmgType === 'piercing' ? 3 : 2) : 1;
+      for (let i = 0; i < numWeaponDice; i++) {
+        diceObjs.push({ sides: weaponDie, val: d(weaponDie), label: `d${weaponDie}` });
+      }
+
+      if (useSneak) {
+        const numSneak = isCrit ? 10 : 5;
+        for (let i = 0; i < numSneak; i++) {
+          diceObjs.push({ sides: 6, val: d(6), label: 'd6' });
+        }
+      }
+
+      const rollId = 'atk_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+      state.rollHistory[rollId] = { weaponName, flatMod, diceObjs, toHitTotal, d20Roll, r1, r2, adv, isCrit, dmgType };
+
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.id = rollId;
+      document.getElementById('diceLog').prepend(entry);
+
+      renderAttackEntry(rollId);
+    }
+
+    function renderAttackEntry(rollId) {
+      const data = state.rollHistory[rollId];
+      const el = document.getElementById(rollId);
+      if (!data || !el) return;
+
+      const sumDice = data.diceObjs.reduce((acc, item) => acc + item.val, 0);
+      const totalDmg = sumDice + data.flatMod;
+
+      const hitText = data.adv
+        ? `2d20kh1 (${data.r1}, ${data.r2}) + 9 = <span class="roll-total">${data.toHitTotal} to Hit</span>`
+        : `1d20 (${data.d20Roll}) + 9 = <span class="roll-total">${data.toHitTotal} to Hit</span>`;
+
+      let critBanner = '';
+      if (data.isCrit) {
+        critBanner = data.dmgType === 'piercing'
+          ? ` <span class="crit-text">💥 PIERCER CRIT (+1 Bonus Weapon Die)!</span>`
+          : ` <span class="crit-text">💥 SLASHER CRIT (Target Has Disadvantage on All Attacks)!</span>`;
+      }
+
+      const dmgLabel = data.dmgType === 'slashing' ? 'Slashing Damage' : 'Piercing Damage';
+      const riderHtml = data.dmgType === 'slashing'
+        ? `<div style="margin-top:4px; color:#fcd34d; font-size:0.85rem;">🐾 <strong>Slasher Rider:</strong> Target's speed is <strong>reduced by 10 ft.</strong> until your next turn!${data.isCrit ? ' <strong>AND target has Disadvantage on all attacks!</strong>' : ''}</div>`
+        : `<div style="margin-top:4px; color:var(--text-muted); font-size:0.82rem;">🩸 <em>Piercer: Click any die chip below to reroll it (1/turn).</em></div>`;
+
+      const chipsHtml = data.diceObjs.map((die, idx) => {
+        const cls = die.rerolled ? 'die-chip rerolled' : 'die-chip';
+        return `<span class="${cls}" title="Click to reroll this die!" onclick="rerollPiercerDie('${rollId}', ${idx})">${die.label}: <strong>${die.val}</strong></span>`;
+      }).join(' ');
+
+      el.innerHTML = `
+        <div class="roll-title">⚔️ ${data.weaponName}${critBanner}</div>
+        <div>🎯 <strong>Attack:</strong> ${hitText}</div>
+        <div style="margin-top:4px;">🩸 <strong>${dmgLabel}:</strong> <span class="roll-total" style="color:#f87171;">${totalDmg}</span> (Mod: +${data.flatMod})</div>
+        <div style="margin-top:4px;">${chipsHtml}</div>
+        ${riderHtml}
+      `;
+    }
+
+    function rerollPiercerDie(rollId, dieIdx) {
+      const data = state.rollHistory[rollId];
+      if (!data) return;
+      const die = data.diceObjs[dieIdx];
+      const oldVal = die.val;
+      die.val = d(die.sides);
+      die.rerolled = true;
+      renderAttackEntry(rollId);
+      addLog('🩸 Piercer Die Rerolled!', `Rerolled ${die.label} from <strong>${oldVal}</strong> ➔ <strong>${die.val}</strong>!`);
+    }
+
+    function triggerWailsSplash(fromTrinket = false) {
+      if (!fromTrinket) {
+        if (state.wailUses > 0) {
+          state.wailUses--;
+          renderAll();
+        } else {
+          addLog('⚠️ Out of Daily Wails (0/4)', 'Use "Crush Trinket for Free 3d6 Wail" above to fuel Wails with a Soul Trinket!');
+          return;
+        }
+      }
+      const d1 = d(6), d2 = d(6), d3 = d(6);
+      const total = d1 + d2 + d3;
+      const src = fromTrinket ? 'Crushed Soul Trinket' : `Daily Use (${state.wailUses}/${state.maxWailUses} left)`;
+      addLog(
+        `💀 Wails from the Grave (${src})`,
+        `Spectral wolves & ancestors tear into a 2nd target within 30 ft for <span class="roll-total" style="color:var(--accent-ghost);">${total} Necrotic Damage</span> [3d6: ${d1}, ${d2}, ${d3}]!`
+      );
+    }
+
+    function rollRawDie(sides) {
+      const val = d(sides);
+      addLog(`🎲 Rolled 1d${sides}`, `Result: <span class="roll-total">${val}</span>`);
+    }
+
+    function rollRandomQuip() {
+      const q = quips[Math.floor(Math.random() * quips.length)];
+      addLog('🎙️ Hecate "Hex" Grimshaw Mutters:', `<em>${q}</em>`);
+    }
+
+    function shortRest() {
+      state.shifted = false;
+      addLog('⛺ Short Rest Completed', 'You may spend Hit Dice to heal and choose a new <strong>Whispers of the Dead</strong> ghost proficiency.');
+      renderAll();
+    }
+
+    function longRest() {
+      state.shifted = false;
+      state.hp = state.maxHp;
+      state.tempHp = 0;
+      state.shiftUses = state.maxShiftUses;
+      state.wailUses = state.maxWailUses;
+      addLog('🌙 Long Rest Completed', 'HP restored to 83/83, Shifting (4/4) and Wails from the Grave (4/4) fully recharged!');
+      renderAll();
+    }
+
+    function addLog(title, bodyHtml) {
+      const log = document.getElementById('diceLog');
+      const div = document.createElement('div');
+      div.className = 'log-entry';
+      div.innerHTML = `<div class="roll-title">${title}</div><div>${bodyHtml}</div>`;
+      log.prepend(div);
+    }
+
+    function clearLog() {
+      document.getElementById('diceLog').innerHTML = '';
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function stepHpInput(delta) {
+      const inp = document.getElementById('hpInput');
+      const cur = parseInt(inp.value) || 0;
+      inp.value = Math.max(1, cur + delta);
+    }
+
+    function exportSaveState() {
+      const trinketBoxes = Array.from(document.querySelectorAll('.trinket-checkbox')).map(b => b.checked);
+      const trinketNames = Array.from(document.querySelectorAll('.trinket-name')).map(i => i.value);
+      const payload = {
+        shifted: state.shifted,
+        hp: state.hp,
+        tempHp: state.tempHp,
+        shiftUses: state.shiftUses,
+        wailUses: state.wailUses,
+        trinketBoxes,
+        trinketNames,
+        whispers: document.getElementById('whispersSelect').value
+      };
+      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+      const url = new URL(window.location.href);
+      url.searchParams.set('hexState', encoded);
+      const shareUrl = url.toString();
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          addLog('📲 iPad Sync Link Copied!', 'A URL containing your current HP, Temp HP, Shifting/Wail pips, and Soul Trinkets has been copied to your clipboard—AirDrop or paste it into iPad Safari!');
+        }).catch(() => {
+          prompt('Copy this sync URL for your iPad:', shareUrl);
+        });
+      } else {
+        prompt('Copy this sync URL for your iPad:', shareUrl);
+      }
+    }
+
+    function checkUrlSyncState() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const encoded = params.get('hexState');
+        if (!encoded) return;
+        const decoded = JSON.parse(decodeURIComponent(atob(encoded)));
+        state.shifted = !!decoded.shifted;
+        if (typeof decoded.hp === 'number') state.hp = decoded.hp;
+        if (typeof decoded.tempHp === 'number') state.tempHp = decoded.tempHp;
+        if (typeof decoded.shiftUses === 'number') state.shiftUses = decoded.shiftUses;
+        if (typeof decoded.wailUses === 'number') state.wailUses = decoded.wailUses;
+        if (Array.isArray(decoded.trinketBoxes)) {
+          const boxes = document.querySelectorAll('.trinket-checkbox');
+          decoded.trinketBoxes.forEach((val, idx) => { if (boxes[idx]) boxes[idx].checked = val; });
+        }
+        if (Array.isArray(decoded.trinketNames)) {
+          const inputs = document.querySelectorAll('.trinket-name');
+          decoded.trinketNames.forEach((val, idx) => { if (inputs[idx]) inputs[idx].value = val; });
+        }
+        if (decoded.whispers) {
+          document.getElementById('whispersSelect').value = decoded.whispers;
+        }
+        addLog('📲 State Restored from Sync Link', 'Loaded HP, Temp HP, Shifting pips, and Soul Trinkets!');
+      } catch (e) {}
+    }
+
+    init();
+    checkUrlSyncState();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
